@@ -1,0 +1,125 @@
+<html>
+  <head>
+    <title>Demos for http://4ydx.com</title>
+    <meta name="keywords" content="4ydx, programming, perl, c, php, ruby, mojolicious, rails, html, css, json, javascript, github, jquery">
+    <meta name="description" content="Programming for fun and freedom.">
+    <link rel="stylesheet" type="text/css" href="css/uploader.css" />
+    <script type="text/javascript" src="js/jquery-1.7.js"></script>
+    <script type="text/javascript" src="js/jquery.uploader.js"></script>
+    <script>
+      function error_callback(error) {
+        /* this is probably a user triggered abort  */
+        if(error.type === 'xhr') {
+          $("#" + error.data.upload_prefix + error.data.display_index).
+          text("Aborted ").removeClass('uploading').addClass('aborted');
+        } 
+        /* do what you need to do here :) */
+        if(error.type === 'server') {
+          /* error.data will be whatever json object you returned from your server */
+        }
+      }
+      function pre_upload_callback(file, id) {
+        $("#all_complete").hide();
+        $(".progressbar").fadeIn();
+        $("#" + id).addClass('uploading').find('.filename').
+        text("uploading " + file.fileName);
+      }
+      function post_upload_callback(headers, response) {
+        $("#" + response.id).
+        text("Completed uploading").removeClass('uploading').addClass('complete');
+        var d = $("<pre></pre>").text(headers);
+        $("#headers").prepend(d);
+      }
+      function all_complete_callback(settings) {
+        $(".progressbar").fadeOut();
+        if($("#complete > div").size() > 0) {
+          $("#all_complete").text("All uploads in the FileList complete.");
+          $("#all_complete").fadeIn();
+          $("#aborted").empty();
+          for(var i = 0; i < settings.aborted.length; i++) {
+            var d = $("<p></p>").text(settings.aborted[i]);
+            $("#aborted").append(d);
+          }
+        }
+      }
+      function populate_display_callback(id, file) {
+        var template = $("#upload_template").html();
+        $("#complete").append(template).find('.filename').text(file.fileName);
+        $("#complete > div:last-child").attr("id", id).html();
+      }
+      $(document).ready(function() {
+        $("#uploader").uploader('init', {
+          'url'                       : 'http://demo.4ydx.com/upload/post.php',
+          'error_callback'            : error_callback,
+          'pre_upload_callback'       : pre_upload_callback,
+          'post_upload_callback'      : post_upload_callback,
+          'all_complete_callback'     : all_complete_callback,
+          'populate_display_callback' : populate_display_callback,
+        });
+      });
+    </script>
+    <style>
+      iframe {
+        width: 90%;
+      }
+      center {
+        text-align: left;
+      }
+      button {
+        margin-bottom: 15px;
+      }
+      span {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <p>Visit <a href="http://4ydx.com/">http://4ydx.com</a> for details and 
+      <a href="https://github.com/4ydx">https://github.com/4ydx</a> for code.</p>
+      <form id="uploader_form">
+        <input id="uploader" type="file" multiple />
+      </form>
+      <div>
+        <button class="abort"
+          onclick="$('#uploader').uploader('abort');">Abort</button>
+        <div class="progressbar">
+          <div class="progress" id="progress">
+          </div>
+        </div>
+        <div style="clear: both;"></div>
+      </div>
+      <div id="complete">
+      </div>
+      <div id="all_complete" class="upload">
+      </div>
+      <br>
+      <a href="http://demo.4ydx.com">Back</a>
+      <div id="upload_template">
+        <div class="upload">
+          <div class="filename"></div>
+          <button class="abort2" 
+            onclick="$('#uploader').uploader('abort');">Abort</button>
+          <div class="remove"></div>
+          <div style="clear: both;"></div>
+        </div>
+      </div>
+      <p>Aborted:</p>
+      <div id="aborted">
+      </div>
+      <p>Servers Response Headers:</p>
+      <div id="headers">
+      </div>
+    </center>
+  </body>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-5525895-2']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+     })();
+</script>
+ </html>

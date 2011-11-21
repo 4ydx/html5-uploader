@@ -1,0 +1,69 @@
+.abort {
+  float: left;
+}
+
+.abort2 {
+  float: right;
+}
+
+.progressbar {
+  display: none;
+  float: left;
+  margin: 4px;
+  width: 300px;
+  height: 15px;
+  border: solid 1px #ccc;
+}
+
+.progress {
+  width: 0px;
+  height: 15px;
+  /* http://ie.microsoft.com/testdrive/graphics/cssgradientbackgroundmaker/default.html */
+  /* IE10 */ 
+  background-image: -ms-linear-gradient(top, #FFFFFF 0%, #18EF00 100%);
+  /* Mozilla Firefox */ 
+  background-image: -moz-linear-gradient(top, #FFFFFF 0%, #18EF00 100%);
+  /* Opera */ 
+  background-image: -o-linear-gradient(top, #FFFFFF 0%, #18EF00 100%);
+  /* Webkit (Safari/Chrome 10) */ 
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #18EF00));
+  /* Webkit (Chrome 11+) */ 
+  background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #18EF00 100%);
+  /* Proposed W3C Markup */ 
+  background-image: linear-gradient(top, #FFFFFF 0%, #18EF00 100%);
+}
+
+.upload {
+  margin-bottom: 5px;
+  padding: 5px;
+}
+
+.aborted {
+  border: 1px solid red;
+  background: #ff5544;
+}
+
+.remove {
+  float: left;
+  display: none;
+}
+
+.complete {
+  border: 1px solid black;
+  background: #ccc;
+}
+
+#all_complete {
+  display: none;
+  border: 1px solid green;
+  background: #33ee00;
+}
+
+.uploading {
+  border: 1px solid #6622ff;
+  background: #6666ff;
+}
+
+#upload_template {
+  display: none;
+}
