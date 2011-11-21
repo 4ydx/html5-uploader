@@ -1,0 +1,20 @@
+Visit http://4ydx.com for details.
+
+Demos are located at http://demo.4ydx.com/
+
+Requirements
+
+-- A browser that supports the html5 File API.
+-- Able to deploy your own code (your localhost is fine).
+-- Javascript :P
+
+Demo
+
+1) upload.html
+   Uploading files in a queue.  Several simple callbacks are available
+   for handling pre/post/all complete moments in time.
+
+Please read the code comments for further details.
+
+TODO: Drag and drop.
+
