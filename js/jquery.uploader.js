@@ -35,11 +35,17 @@
       /* id of the element on the page that will show an upload bar */
       'progressbar_id': 'progress',
 
-      /* the prefix for each div containing information about an uploading file */
+      /* the prefix for each div containing information about an 
+       * uploading file */
       'upload_prefix' : 'upload_',
 
       /* maximum filesize amount to be uploaded */
       'limit': 0,
+
+      /* function unsupported_callback() is called when the browser doesn't
+       * support file uploads
+       */
+      'unsupported_callback' : null,
 
       /* lets you handle progressbar updates on your own 
        * function progress_callback(event, id)
@@ -108,6 +114,15 @@
       'init': function(options) {
         $.extend(settings, options);
 
+        if(typeof window.FileReader === 'undefined') {
+          if(this.unsupported_callback) {
+            this.unsupported_callback();
+            return;
+          } else {
+            $.error('jQuery.upload not supported in this browser');
+            return;
+          }  
+        }
         if(!this.is("input")) {
           $.error('jQuery.upload must be called on an input');
           return;
