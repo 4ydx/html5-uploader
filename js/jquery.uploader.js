@@ -114,7 +114,7 @@
       'init': function(options) {
         $.extend(settings, options);
 
-        if(typeof window.FileReader === 'undefined') {
+        if(typeof window.FileList === 'undefined') {
           if(this.unsupported_callback) {
             this.unsupported_callback();
             return;

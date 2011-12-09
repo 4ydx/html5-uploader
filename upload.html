@@ -7,6 +7,9 @@
     <script type="text/javascript" src="js/jquery-1.7.js"></script>
     <script type="text/javascript" src="js/jquery.uploader.js"></script>
     <script>
+      function unsupported_callback() {
+        alert("Your browser does not support HTML5 uploads.");
+      }
       function error_callback(error) {
         /* this is probably a user triggered abort  */
         if(error.type === 'xhr') {
@@ -54,7 +57,8 @@
           'pre_upload_callback'       : pre_upload_callback,
           'post_upload_callback'      : post_upload_callback,
           'all_complete_callback'     : all_complete_callback,
-          'populate_display_callback' : populate_display_callback
+          'populate_display_callback' : populate_display_callback,
+          'unsupported_callback'      : unsupported_callback
         });
       });
     </script>
