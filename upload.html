@@ -19,6 +19,9 @@
         /* do what you need to do here :) */
         if(error.type === 'server') {
           /* error.data will be whatever json object you returned from your server */
+          $("#" + error.data.upload_prefix + error.data.display_index).
+          text("Server Error: " + error.status).
+          removeClass('uploading').addClass('aborted');
         }
       }
       function pre_upload_callback(file, id) {
@@ -82,7 +85,7 @@
       <p>Visit <a href="http://4ydx.com/">http://4ydx.com</a> for details and 
       <a href="https://github.com/4ydx">https://github.com/4ydx</a> for code.</p>
       <form id="uploader_form">
-        <input id="uploader" type="file" multiple />
+        <input id="uploader" type="file" multiple="multiple" />
       </form>
       <div>
         <button class="abort"

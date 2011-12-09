@@ -21,9 +21,11 @@
   $.fn.uploader = function(params) {
     var error = {
       /* server or xhr error */
-      'type': '',
+      'type'  : '',
+      /* xhr requests status on error */
+      'status': 0,
       /* server json response or xhr object */
-      'data': {}
+      'data'  : {}
     };
     var settings = {
       /* upload post url */
@@ -82,9 +84,8 @@
       'post_upload_callback': null,
 
       /* called when the server returns an error, when xhr fails, or on abort
-       * function my_error_callback(type, object)
-       * type  : "server" OR "xhr"
-       * object: server side json encoded error message OR the session object 
+       * function my_error_callback(object)
+       * object : error object [type, status, data]
        * */
       'error_callback': null,
 
@@ -134,6 +135,13 @@
         var opt = this.data('upload');
         if(!opt) {
           var $this    = this;
+          /* multiple file upload in safari appears to be broken */
+          var ua     = navigator.userAgent.toLowerCase();
+          var chrome = /chrome/.test(ua);
+          var safari = /safari/.test(ua);
+          if(safari && !chrome) {
+            $this.removeAttr("multiple");
+          }
           settings.xhr = new XMLHttpRequest();
           /* the change event triggers new uploading */
           this.bind("change", function() {
@@ -147,6 +155,7 @@
         this.data('upload', settings);
         return this;
       },
+      /* set up the xhr object for processing files */
       'prepare_xhr' : function($this, settings) {
         /* progress bar */
         settings.xhr.upload.addEventListener("progress", function(event) {
@@ -166,9 +175,14 @@
             return;
           }
           if(this.status != 200) {
-            /* handle error or abort */
-            error.type = 'xhr';
-            error.data = settings;
+            if(this.status == 0) {
+              /* handle abort */
+              error.type = 'xhr';
+            } else {
+              error.type = 'server';
+            }
+            error.status = this.status;
+            error.data   = settings;
             settings.error_callback(error);
           } else {
             /* upload complete */
@@ -180,8 +194,9 @@
                 settings.post_upload_callback(headers, response);
               } else {
                 /* handle server side errors */
-                error.type = 'server';
-                error.data = response;
+                error.type   = 'server';
+                error.status = this.status;
+                error.data   = response;
                 if(settings.error_callback != null) {
                   settings.error_callback(error);
                 }
